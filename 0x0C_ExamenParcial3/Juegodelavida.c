@@ -37,6 +37,8 @@ int main()
         printf("\n");
     }
 
+    int indefinido = 1;
+
     do
     {
 
@@ -72,89 +74,138 @@ int main()
 
                 if (i - 1 >= 0)
                 {
-                    if (primeraGeneracion [i-1] [j]==1)
+                    if (primeraGeneracion[i - 1][j] == 1)
                     {
                         vecinos++;
                     }
                 }
 
-                if (i-1 >=0 && j+1 <=10)
+                if (i - 1 >= 0 && j + 1 <= 10)
                 {
-                    if (primeraGeneracion [i-1] [j+1]==1)
+                    if (primeraGeneracion[i - 1][j + 1] == 1)
                     {
                         vecinos++;
                     }
                 }
 
-                if (j-1 >=0)
+                if (j - 1 >= 0)
                 {
-                    if (primeraGeneracion [i] [j-1]==1)
+                    if (primeraGeneracion[i][j - 1] == 1)
                     {
                         vecinos++;
                     }
                 }
 
-                if (j+1 <=10)
+                if (j + 1 <= 10)
                 {
-                    if (primeraGeneracion [i] [j+1]==1)
+                    if (primeraGeneracion[i][j + 1] == 1)
                     {
                         vecinos++;
                     }
                 }
 
-                if (i+1 <=10 && j-1>=0)
+                if (i + 1 <= 10 && j - 1 >= 0)
                 {
-                    if (primeraGeneracion [i+1] [j-1]==1)
+                    if (primeraGeneracion[i + 1][j - 1] == 1)
                     {
                         vecinos++;
                     }
                 }
 
-                if (i+1 <=10)
+                if (i + 1 <= 10)
                 {
-                    if (primeraGeneracion [i+1] [j]==1)
+                    if (primeraGeneracion[i + 1][j] == 1)
                     {
                         vecinos++;
                     }
                 }
 
-                if (i+1 <=10 && j+1 <=10)
+                if (i + 1 <= 10 && j + 1 <= 10)
                 {
-                    if (primeraGeneracion [i+1] [j+1]==1)
+                    if (primeraGeneracion[i + 1][j + 1] == 1)
                     {
                         vecinos++;
                     }
                 }
 
-
-
-                if (segundaGeneracion [i] [j]==1)
+                if (segundaGeneracion[i][j] == 1)
                 {
-                    if (vecinos==3)
+                    if (vecinos == 3)
                     {
-                        segundaGeneracion [i] [j] =1;
+                        segundaGeneracion[i][j] = 1;
                     }
 
-                    if (vecinos==2)
+                    if (vecinos == 2)
                     {
-                        segundaGeneracion [i] [j] =1;
-                    } 
+                        segundaGeneracion[i][j] = 1;
+                    }
 
-                    if (vecinos<2)
+                    if (vecinos < 2)
                     {
-                        segundaGeneracion [i] [j] =0;
-                    } 
-                    
-                    if (vecinos>3)
+                        segundaGeneracion[i][j] = 0;
+                    }
+
+                    if (vecinos > 3)
                     {
-                        segundaGeneracion [i] [j] =0;
-                    } 
+                        segundaGeneracion[i][j] = 0;
+                    }
                 }
 
+                if (segundaGeneracion[i][j] == 0)
+                {
+                    if (vecinos == 3)
+                    {
+                        segundaGeneracion[i][j] = 1;
+                    }
 
+                    if (vecinos == 2)
+                    {
+                        segundaGeneracion[i][j] = 0;
+                    }
+
+                    if (vecinos < 2)
+                    {
+                        segundaGeneracion[i][j] = 0;
+                    }
+
+                    if (vecinos > 3)
+                    {
+                        segundaGeneracion[i][j] = 0;
+                    }
+                }
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    primeraGeneracion[i][j] = segundaGeneracion[i][j];
+                }
             }
         }
-    } while;
 
-    return 0;
+    } while (indefinido < 20);
+
+    printf("\n");
+
+    for (int i = 1; i < 10; i++)
+    {
+        for (int j = 1; j < 10; j++)
+        {
+            printf("%d", primeraGeneracion[i][j]);
+        }
+        printf("\n");
+    }
+
+    for (int j = 1; j < 10; j++)
+    {
+        for (int i = 1; i < 10; i++)
+        {
+            primeraGeneracion[i][j] = segundaGeneracion[i][j];
+        }
+    }
+    indefinido++;
+    printf("\n");
+
+    return 1;
 }
