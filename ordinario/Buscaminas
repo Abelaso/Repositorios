@@ -1,0 +1,133 @@
+#include <ctype.h> // toupper
+#include <time.h>
+#include <stdio.h>  // printf, scanf
+#include <stdlib.h> // rand
+
+#define COLUMNAS 6
+#define FILAS 6
+#define CASILLA_OCULTA ' '
+#define MINA 'M'
+#define CANTIDAD_MINAS 1 
+
+void generarMinas(char minas[FILAS][COLUMNAS])
+{
+    int x = 0, y = 0;
+    for (int i = 0; i < CANTIDAD_MINAS; i++)
+    {
+        x = (rand() % (FILAS - 1));
+        y = (rand() % (COLUMNAS - 1));
+        minas[x][y] = MINA;
+    }
+}
+
+void imprimirTablero(char tablero[FILAS][COLUMNAS])
+{
+    char marcadorF = 'A';
+    int marcadorC = 0;
+    // imprimir tablero
+    printf("  ");
+    for (int i = 0; i < COLUMNAS; i++)
+    {
+        printf(" %i ", marcadorC);
+        marcadorC++;
+    }
+    printf("\n");
+    for (int i = 0; i < FILAS; i++)
+    {
+        printf("%c ", marcadorF);
+        for (int j = 0; j < COLUMNAS; j++)
+        {
+            printf("[%c]", tablero[i][j]);
+        }
+        printf("\n");
+        marcadorF++;
+    }
+}
+
+void inicializarTablero(char tablero[FILAS][COLUMNAS])
+{
+    for (int i = 0; i < FILAS; i++)
+    {
+        for (int j = 0; j < COLUMNAS; j++)
+        {
+            tablero[i][j] = CASILLA_OCULTA;
+        }
+    }
+}
+
+int contarMinasAlrededor(char tablero[FILAS][COLUMNAS], int fila, int columna)
+{
+    int minasAlrededor = 0;
+
+    for (int i = fila - 1; i <= fila + 1; i++)
+    {
+        for (int j = columna - 1; j <= columna + 1; j++)
+        {
+            if (i >= 0 && i < FILAS && j >= 0 && j < COLUMNAS && !(i == fila && j == columna))
+            {
+                if (tablero[i][j] == MINA)
+                {
+                    minasAlrededor++;
+                }
+            }
+        }
+    }
+
+    return minasAlrededor;
+}
+void descubrirCasillasVecinas(char tablero[FILAS][COLUMNAS], char tablero_usuario[FILAS][COLUMNAS], int fila, int columna)
+{
+    for (int i = fila - 1; i <= fila + 1; i++)
+    {
+        for (int j = columna - 1; j <= columna + 1; j++)
+        {
+            if (i >= 0 && i < FILAS && j >= 0 && j < COLUMNAS && !(i == fila && j == columna))
+            {
+                if (tablero[i][j] == ' ' && tablero_usuario[i][j] == CASILLA_OCULTA)
+                {
+                    tablero_usuario[i][j] = ' ';
+                    descubrirCasillasVecinas(tablero, tablero_usuario, i, j);
+                }
+                else if (tablero_usuario[i][j] == CASILLA_OCULTA)
+                {
+                    tablero_usuario[i][j] = tablero[i][j];
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    srand(time(NULL));            
+
+    char tablero[FILAS][COLUMNAS];
+    char tablero_usuario[FILAS][COLUMNAS];
+
+    inicializarTablero(tablero); 
+    inicializarTablero(tablero_usuario);  
+    generarMinas(tablero);          
+    imprimirTablero(tablero_usuario); 
+    while(1) {
+        int fila, columna;
+        printf("Ingresa la fila y la columna de la casilla que quieres revelar (ej. A 0): ");
+        scanf("%lc %d", &fila, &columna);
+        printf ("\n");
+        fila = toupper(fila) - 'A';
+
+        if (tablero[fila][columna] == MINA) {
+            printf("¡Has perdido!\n");
+            break;
+        }
+
+        int minasAlrededor = contarMinasAlrededor(tablero, fila, columna);
+
+       
+            tablero_usuario[fila][columna] = minasAlrededor + '0';
+        
+
+        imprimirTablero(tablero_usuario);
+
+    }
+
+    return 0;
+}
